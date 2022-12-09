@@ -11,7 +11,12 @@
      <body >
          <div align ="center">
             <h3>Back4page</h3>
-         <a href="https://back4page.xyz/v1/signup/verify/{{$id}}" >Verify this email</a>
+         
+
+         <h4>
+            Your Password Reset Verification code 
+         </h4>
+         <p>{{$code}}</p>
 
 
          </div>

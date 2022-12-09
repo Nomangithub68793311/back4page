@@ -34,11 +34,11 @@ class AccountController extends Controller
         if( $found_account){
 
             if($found_account->verified){
-                return Redirect::to('https://bedpage.vercel.app/user-signin');
+                return Redirect::to('https://www.back4page.com/user-signin');
             }
             $found_account->verified=true;
             $found_account->save();
-            return Redirect::to('https://bedpage.vercel.app/user-signin');
+            return Redirect::to('https://www.back4page.com/user-signin');
         }
         return "error";
 
