@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('credit')->nullable();
             $table->boolean('verified')->default(false); 
+            $table->string('code')->nullable();
             $table->string('hashedPassword');
             $table->timestamps();
         });

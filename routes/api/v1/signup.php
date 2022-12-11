@@ -9,5 +9,7 @@ Route::get('/signup/verify/{id}', [AccountController::class,'verifyEmail'])->mid
 Route::get('/signup/check', [AccountController::class,'check'])->middleware('IpCheckAndAllow');
 
 Route::post('/user/login', [AccountController::class,'login'])->middleware('IpCheckAndAllow');
+Route::post('/account/delete/{id}', [AccountController::class,'delete'])->middleware('IpCheckAndAllow');
+
 // Route::post('/user/login', [AccountController::class,'login'])->middleware('throttle:3,1');
 

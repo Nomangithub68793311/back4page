@@ -16,7 +16,7 @@ class Account extends Model
         
     ];
     protected $fillable=[
-     'name','email','password','hashedPassword'
+     'name','email','password','hashedPassword','code'
     ];
     public function posts()
     {

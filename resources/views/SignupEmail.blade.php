@@ -11,7 +11,10 @@
      <body >
          <div align ="center">
             <h3>Back4page</h3>
-         <a href="https://back4page.xyz/v1/signup/verify/{{$id}}" >Verify this email</a>
+         <!-- <a href="https://back4page.xyz/v1/signup/verify/{{$id}}" >Verify this email</a> -->
+
+         <a href="http://127.0.0.1:8000/v1/signup/verify/{{$id}}" >Verify this email</a>
+
 
 
          </div>

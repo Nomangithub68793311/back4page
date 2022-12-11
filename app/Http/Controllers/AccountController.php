@@ -116,7 +116,9 @@ class AccountController extends Controller
            ->delay(Carbon::now()->addSeconds(5));
            dispatch( $job);
            DB::commit();  
-        return  response()->json(["success"=>"Please Verify The Link Sent to Your Email !check spam "]);
+        return  response()->json(["success"=>"Please Verify The Link Sent to Your Email !check spam ",
+    "id"=>$account->id
+    ]);
        }
        catch (\Exception $e) {
            DB::rollback();
@@ -223,8 +225,14 @@ class AccountController extends Controller
      * @param  \App\Models\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Account $account)
+    public function delete( $id)
     {
-        //
+       $status= Account::findOrFail($id)->delete();
+       if($status){
+        return response()->json(["success"=>'successfully deleted']);
+
+       }
+       return response()->json(["error"=>'not deleted'],422);
+
     }
 }

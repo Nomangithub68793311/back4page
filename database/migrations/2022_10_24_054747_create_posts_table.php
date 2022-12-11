@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('service');
             $table->string('category');
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('email');
             $table->string('phone');
             $table->integer('views')->nullable();
