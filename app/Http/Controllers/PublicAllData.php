@@ -23,7 +23,7 @@ class PublicAllData extends Controller
     {
         // return  response()->json(["success"=>$country]);
 
-        $id="de191b40-f46e-450c-b5a2-20926c9b4ae0";
+        // $id="de191b40-f46e-450c-b5a2-20926c9b4ae0";
         $post = Post::where('city','=',$city)
         ->where('category','=',$category)
         ->get();
@@ -33,10 +33,21 @@ class PublicAllData extends Controller
     public function singlePost($id)
 
    { 
-    $post=Post::find($id);
+    // return  response()->json(["yes"=> $id]);
+
+    $post=Post::where('id','=',$id)->first();
+    $post->views=$post->views + 1;
+    $post->save();
     return  response()->json(["success"=> $post]);
 }
+public function mostViewAd()
+    {
+    //  $post= Post::orderBy('views', 'DESC')->first();
+   $posts=  Post::orderBy('views','DESC')->limit(10)->get();
+     return  response()->json(["success"=>$posts]);
 
+        // DB::table('Post')max('views');
+    }
 
 
 }

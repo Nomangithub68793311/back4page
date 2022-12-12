@@ -156,7 +156,7 @@ class PostController extends Controller
 
     }
     
-    $input['images']  = $request->file('file')->store('products');
+    // $input['images']  = $request->file('file')->store('products');
 
 
         try {
@@ -174,11 +174,11 @@ class PostController extends Controller
             //     "email"=>$student->email
                 
             // ]);
-            if($request->totalBill)
-            {
-            $account->credit=$account->credit-$request->totalBill ;
-            $account->save();
-             }
+            // if($request->totalBill)
+            // {
+            // $account->credit=$account->credit-$request->totalBill ;
+            // $account->save();
+            //  }
             DB::commit();   
             // $job=(new StudentEmailJob( $student->email,$student->password, $school->institution_name,$school->logo,))
             // ->delay(Carbon::now()->addSeconds(5));

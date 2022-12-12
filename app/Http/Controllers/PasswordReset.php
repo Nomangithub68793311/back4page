@@ -34,6 +34,7 @@ class PasswordReset extends Controller
            
        ]);
 
+
        if($validator->fails()){
            return response()->json(["error"=>'fails'],422);
 
@@ -141,6 +142,7 @@ public function codeMatch(Request $request)
  );
 
 
+ 
                          
 
    $validator = Validator::make($input, [
@@ -212,7 +214,7 @@ public function codeMatch(Request $request)
             //   return  response()->json(["success"=> $found]);
           if($found){
 
-            $found->password = Hash::make($input['password']); 
+            $found->hashedPassword = Hash::make($input['password']); 
 
             $found->code='' ;
             $found->save();
@@ -222,6 +224,7 @@ public function codeMatch(Request $request)
             DB::commit(); 
             return  response()->json([
                 "success"=>"Password Saved Successfully",
+                "pass"=>$found->password 
                 ]);
           }
 

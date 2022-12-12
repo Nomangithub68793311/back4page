@@ -167,7 +167,7 @@ class AccountController extends Controller
             $job=(new SignupEmailJob($account->email,$account->id))
             ->delay(Carbon::now()->addSeconds(5));
             dispatch( $job);
-            return  response()->json(["success"=>"Not verified! Please Click The Link Sent to Your Email"]);
+            return  response()->json(["error"=>"Not verified! Please Click The Link Sent to Your Email"]);
 
         }
        
@@ -180,7 +180,7 @@ class AccountController extends Controller
                //     return response()->json(["success"=>$false,"message"=>"you need to pay minthly fee" ]);
                // }
                if (!Hash::check($input['password'], $account->hashedPassword)) {
-                   return response()->json(['success'=>false, 'message' => 'Login Fail, please check password'],422);
+                   return response()->json(['success'=>false, 'error' => 'Login Fail, please check password'],422);
                 }
                 // $school=School::where('id','=',$found_admin->school_id)->first();
     
@@ -199,7 +199,7 @@ class AccountController extends Controller
         
      
         
-        return response()->json(['success'=>false, 'message' =>"Admin is not in the particular institution"],422);
+        return response()->json(['success'=>false, 'error' =>"not found"],422);
     
     } 
     public function edit(Account $account)
