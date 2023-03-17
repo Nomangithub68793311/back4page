@@ -56,6 +56,13 @@ class AccountController extends Controller
 
     }
 
+    public function semdmail(Request $request)
+    {
+        Mail::to($request->email)->send('sent it');
+        return response()->json(["yes"=>$request->email]);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -83,6 +90,7 @@ class AccountController extends Controller
 
        }
       
+    //    return response()->json(["success"=>"success"]);
 
 
        $matchThese = ['email' => $request->email];
@@ -148,28 +156,76 @@ class AccountController extends Controller
     public function login(Request $request)
     {
        
-        $input = $request->only('email', 'password',);
+        $input = $request->only('email', 'image','name',);
         $validator = Validator::make($input, [
             'email' => 'required',
-            'password' => 'required|min:8'
+            'image' => 'required',
+            'name' => 'required',
         ]);
         if($validator->fails()){
             return response()->json(["error"=>'email or password fails'],422);
     
         }
-        $matchThese = ['email' => $request->email];
-        $account=Account::where($matchThese)->first();
-        if(!$account){
-            return response()->json(["error"=>'Email not found'],422);
-    
-        }
-        if(!$account->verified){
-            $job=(new SignupEmailJob($account->email,$account->id))
-            ->delay(Carbon::now()->addSeconds(5));
-            dispatch( $job);
-            return  response()->json(["error"=>"Not verified! Please Click The Link Sent to Your Email"]);
+       if(! $request->secret_key){
 
+        return response()->json(["error"=>'invalid'],422);
+
+       }
+        $key = env('SECRET_KEY');
+   if( $key == $request->secret_key){
+     $matchThese = ['email' => $request->email];
+    $account=Account::where($matchThese)->first();
+    if($account){
+        $payload = JWTFactory::sub($account->id)
+        // ->myCustomObject($account)
+        ->make();
+        $token = JWTAuth::encode($payload);
+            return response()->json(['success'=>true, 
+            'token' => '1'.$token ,
+            'id' => $account->id ,
+                    
+        ]);
+    }
+
+    try {
+        DB::beginTransaction();
+        $account =Account::create($input); // eloquent creation of data
+        if (!$account) {
+            return response()->json(["error"=>"didnt work"],422);
         }
+      
+       
+        DB::commit();  
+        $payload = JWTFactory::sub($account->id)
+        // ->myCustomObject($account)
+        ->make();
+        $token = JWTAuth::encode($payload);
+            return response()->json(['success'=>true, 
+            'token' => '1'.$token ,
+            'id' => $account->id ,
+                    
+        ]);
+    }
+    catch (\Exception $e) {
+        DB::rollback();
+        return response()->json(["error"=>"process error!"],422);
+}
+
+  
+   }
+        // $matchThese = ['email' => $request->email];
+        // $account=Account::where($matchThese)->first();
+        // if(!$account){
+        //     return response()->json(["error"=>'Email not found'],422);
+    
+        // }
+        // if(!$account->verified){
+        //     $job=(new SignupEmailJob($account->email,$account->id))
+        //     ->delay(Carbon::now()->addSeconds(5));
+        //     dispatch( $job);
+        //     return  response()->json(["error"=>"Not verified! Please Click The Link Sent to Your Email"]);
+
+        // }
        
        
            
@@ -179,27 +235,19 @@ class AccountController extends Controller
                // if($diff >30){
                //     return response()->json(["success"=>$false,"message"=>"you need to pay minthly fee" ]);
                // }
-               if (!Hash::check($input['password'], $account->hashedPassword)) {
-                   return response()->json(['success'=>false, 'error' => 'Login Fail, please check password'],422);
-                }
+            //    if (!Hash::check($input['password'], $account->hashedPassword)) {
+            //        return response()->json(['success'=>false, 'error' => 'Login Fail, please check password'],422);
+            //     }
                 // $school=School::where('id','=',$found_admin->school_id)->first();
     
     
-                $payload = JWTFactory::sub($account->id)
-           // ->myCustomObject($account)
-           ->make();
-           $token = JWTAuth::encode($payload);
-               return response()->json(['success'=>true, 
-               'token' => '1'.$token ,
-               'id' => $account->id ,
-                       
-           ]);
+          
     
            
         
      
         
-        return response()->json(['success'=>false, 'error' =>"not found"],422);
+        return response()->json(['success'=>false, 'error' =>"something wrong!!"],422);
     
     } 
     public function edit(Account $account)

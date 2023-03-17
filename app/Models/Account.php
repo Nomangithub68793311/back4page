@@ -11,12 +11,15 @@ class Account extends Model
     use HasFactory;
     protected $dateFormat = 'Y-m-d H:i:s';
     protected $hidden = [
-        'password','hashedPassword'
-        
+        // 'password','hashedPassword'
+        'name','email','image'
         
     ];
     protected $fillable=[
-     'name','email','password','hashedPassword','code'
+    //  'name','email','password','hashedPassword','code'
+
+     'name','email','image'
+
     ];
     public function posts()
     {

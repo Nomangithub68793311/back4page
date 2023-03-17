@@ -19,11 +19,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('email');
-            $table->string('password');
+            $table->string('image');
             $table->integer('credit')->nullable();
-            $table->boolean('verified')->default(false); 
-            $table->string('code')->nullable();
-            $table->string('hashedPassword');
+            // $table->boolean('verified')->default(false); 
+            // $table->string('code')->nullable();
+            // $table->string('hashedPassword');
             $table->timestamps();
         });
     }
